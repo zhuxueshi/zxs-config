@@ -1,3 +1,3 @@
 management:
   security:
-    enabled: false   ###跳过权限验证
+    enabled: true   ###跳过权限验证
