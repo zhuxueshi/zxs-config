@@ -1,0 +1,29 @@
+
+server:
+  port: 8766
+
+spring:
+  application:
+    name: serviceCall
+
+
+feign:
+  hystrix:
+    enabled:  true
+  client:
+    config:
+      default:           #服务名，填写default为所有服务
+        connectTimeout: 5000
+        readTimeout: 12000
+#ribbon:    
+#  ReadTimeout: 60000    
+#  ConnectTimeout: 60000
+
+eureka:
+  instance:
+#    hostname: 192.168.1.105
+    instance-id: 192.168.1.105:${spring.application.name}:${server.port}
+  client:
+    registry-fetch-interval-seconds: 5 #客户端拉取注册中心的服务列表
+    serviceUrl:
+      defaultZone: http://192.168.1.105:8761/eureka/
