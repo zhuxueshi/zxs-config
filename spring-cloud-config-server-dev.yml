@@ -1,3 +1,71 @@
-management:
-  security:
-    enabled: false   ###跳过权限验证
+server:
+  port: 8081
+spring:
+  application:
+    name: sc-gateway-server
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lowerCaseServiceId: true
+      routes:
+      - id: SERVICE-HI
+        uri: lb://service-hi
+        predicates:
+        - Path=/zhuxueshi/**
+        filters:
+        - StripPrefix=1
+        - RequestTime
+        - name: Hystrix
+          args:
+            name: default
+            fallbackUri: forward:/defaultfallback
+            
+      - id: requestratelimiter_route
+        uri: http://httpbin.org:80/get
+        filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 2
+            key-resolver: "#{@initHostAddrKeyResolver}"
+        predicates:
+          - Method=GET
+
+  hystrix:
+    command:
+      default:
+        execution:
+          isolation:
+            thread:
+              timeoutInMilliseconds: 30000
+              strategy: SEMAPHORE
+    shareSecurityContext: true
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
