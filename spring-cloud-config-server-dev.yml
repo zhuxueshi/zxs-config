@@ -1,3 +1,9 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sc-gateway-server
   redis:
     host: 192.168.1.104
     port: 6379
@@ -42,3 +48,19 @@ hystrix:
           thread:
             timeoutInMilliseconds: 60000
 #  shareSecurityContext: true
+
+eureka:
+  instance:
+    hostname: 192.168.1.105
+#    instance-id: 192.168.1.104:${spring.application.name}:${server.port}
+#    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+
+
+
