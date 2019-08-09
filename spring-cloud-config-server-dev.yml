@@ -1,52 +1,66 @@
 server:
   port: 8081
+
 spring:
   application:
     name: sc-gateway-server
+  redis:
+    host: 192.168.1.104
+    port: 6379
+#    password: 
+    database: 0
+    
   cloud:
     gateway:
       discovery:
         locator:
-          enabled: false
+          enabled: true
           lowerCaseServiceId: true
       routes:
-      - id: SERVICE-HI
-        uri: lb://service-hi
+      - id: SERVICEHI
+        uri: http://192.168.1.104:8762
+#        uri: lb://SERVICEHI
+        order: 0
         predicates:
-        - Path=/zhuxueshi/**
+          - Path=/zhuxueshi/**
         filters:
-        - StripPrefix=1
-        - RequestTime
-        - name: Hystrix
-          args:
-            name: default
-            fallbackUri: forward:/defaultfallback
-            
-      - id: requestratelimiter_route
-        uri: http://httpbin.org:80/get
-        filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 1
-            redis-rate-limiter.burstCapacity: 2
-            key-resolver: "#{@initHostAddrKeyResolver}"
-        predicates:
-          - Method=GET
+          - StripPrefix=1
+          - RequestTime=true
+          # 熔断降级配置
+          - name: Hystrix
+            args:
+              name : default
+              fallbackUri: 'forward:/defaultfallback'
+          #限流处理
+          - name: RequestRateLimiter
+            args:
+              key-resolver: '#{@uritLimit}'
+              redis-rate-limiter.replenishRate: 1
+              redis-rate-limiter.burstCapacity: 12
+              
+# hystrix 信号量隔离，3秒后自动超时
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
+#  shareSecurityContext: true
 
-  hystrix:
-    command:
-      default:
-        execution:
-          isolation:
-            thread:
-              timeoutInMilliseconds: 30000
-              strategy: SEMAPHORE
-    shareSecurityContext: true
-  
 eureka:
+  instance:
+    hostname: 192.168.1.105
+#    instance-id: 192.168.1.104:${spring.application.name}:${server.port}
+#    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
 logging:
   level:
     org.springframework.cloud.gateway: debug
+
+
+
