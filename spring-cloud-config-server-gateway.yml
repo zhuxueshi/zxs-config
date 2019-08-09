@@ -18,7 +18,7 @@ spring:
           lowerCaseServiceId: true
       routes:
       - id: serviceCall
-        uri: http://192.168.1.104:8762
+        uri: http://192.168.1.105:8762
 #        uri: lb://serviceCall
         order: 0
         predicates:
