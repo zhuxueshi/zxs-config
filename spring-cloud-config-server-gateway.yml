@@ -19,7 +19,7 @@ spring:
       routes:
       - id: SERVICEHI
         uri: http://192.168.1.104:8762
-#        uri: lb://SERVICEHI
+#        uri: lb://serviceCall
         order: 0
         predicates:
           - Path=/zhuxueshi/**
