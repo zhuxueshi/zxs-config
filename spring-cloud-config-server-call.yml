@@ -25,9 +25,9 @@ feign:
 
 eureka:
   instance:
-#    hostname: 192.168.1.105
-    instance-id: 192.168.1.105:${spring.application.name}:${server.port}
+    hostname: 192.168.1.105
+    instance-id: ${eureka.instance.hostname}:${spring.application.name}:${server.port}
   client:
     registry-fetch-interval-seconds: 5 #客户端拉取注册中心的服务列表
     serviceUrl:
-      defaultZone: http://192.168.1.105:8761/eureka/
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
