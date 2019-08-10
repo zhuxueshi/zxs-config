@@ -12,6 +12,9 @@ feign:
   client:
     config:
       default:           #服务名，填写default为所有服务
+        execution:
+          timeout:
+            enabled: false
         connectTimeout: 5000
         readTimeout: 12000
 #ribbon:    
