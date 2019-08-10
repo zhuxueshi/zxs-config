@@ -6,22 +6,21 @@ spring:
     name: serviceCall
 
 
-#  cloud: 
-feign:
-  hystrix:
-    enabled:  false
-  client:
-    config:
-      default:           #服务名，填写default为所有服务
-        execution:
-          timeout:
-            enabled: false
-        connectTimeout: 5000
-        readTimeout: 12000
-  ribbon:    
-    maxAutoRetries: 10
-    ReadTimeout: 60000    
-    ConnectTimeout: 60000
+#feign:
+ # hystrix:
+  #  enabled:  false
+  #client:
+  #  config:
+  #    default:           #服务名，填写default为所有服务
+  #      execution:
+  #        timeout:
+  #          enabled: false
+  #      connectTimeout: 5000
+  #      readTimeout: 12000
+#  ribbon:    
+#    maxAutoRetries: 10
+#    ReadTimeout: 60000    
+#    ConnectTimeout: 60000
 
 eureka:
   instance:
