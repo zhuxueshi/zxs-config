@@ -17,9 +17,10 @@ feign:
             enabled: false
         connectTimeout: 5000
         readTimeout: 12000
-#ribbon:    
-#  ReadTimeout: 60000    
-#  ConnectTimeout: 60000
+ribbon:    
+  maxAutoRetries: 10
+  ReadTimeout: 60000    
+  ConnectTimeout: 60000
 
 eureka:
   instance:
