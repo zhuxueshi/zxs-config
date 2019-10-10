@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: sc-gateway-server
+  redis:
+    host: 172.18.184.216
+    port: 6379
+#    password: 
+    database: 0
+    
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+      - id: serviceCall
+ #       uri: http://172.18.184.216:8766
+        uri: lb://serviceCall
+        order: 0
+        predicates:
+          - Path=/zhuxueshi/**
+        filters:
+          - StripPrefix=1
+          - RequestTime=true
+          # 熔断降级配置
+          - name: Hystrix
+            args:
+              name : default
+              fallbackUri: 'forward:/defaultfallback'
+          #限流处理
+          - name: RequestRateLimiter
+            args:
+              key-resolver: '#{@uritLimit}'
+              redis-rate-limiter.replenishRate: 1
+              redis-rate-limiter.burstCapacity: 12
+              
+# hystrix 信号量隔离，3秒后自动超时
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          thread:
+            timeoutInMilliseconds: 60000
+#  shareSecurityContext: true
+
+eureka:
+  instance:
+    hostname: 172.18.184.216
+    instance-id: window:${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
