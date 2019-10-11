@@ -3,6 +3,7 @@ server:
 spring:
   application:
     name: serviceCall
+    
 feign:
   hystrix:
     enabled:  true
