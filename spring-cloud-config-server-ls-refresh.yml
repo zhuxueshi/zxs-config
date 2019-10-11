@@ -1,1 +1,18 @@
+server:
+  port: 8082
 
+spring:
+  application:
+    name: spring-cloud-config-client-refresh
+
+management:
+  security:
+    enabled: false   ###跳过权限验证
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 1 ### 每秒想注册中心发送心跳，证明自己活着
+    lease-expiration-duration-in-seconds: 2 ## 2秒内没有想注册中心发送心跳包，将被注册中心服务剔除掉
+  hostname: 172.18.184.216
+  client:
+    serviceUrl:
+      defaultZone: http://172.18.184.216:8761/eureka/   ## 注册中心eurka地址
