@@ -27,16 +27,16 @@ spring:
           - StripPrefix=1
           - RequestTime=true
           # 熔断降级配置
-          - name: Hystrix
-            args:
-              name : default
-              fallbackUri: 'forward:/defaultfallback'
+#          - name: Hystrix
+#            args:
+#              name : default
+#              fallbackUri: 'forward:/defaultfallback'
           #限流处理
-          - name: RequestRateLimiter
-            args:
-              key-resolver: '#{@uritLimit}'
-              redis-rate-limiter.replenishRate: 1
-              redis-rate-limiter.burstCapacity: 12
+#          - name: RequestRateLimiter
+#            args:
+#              key-resolver: '#{@uritLimit}'
+#              redis-rate-limiter.replenishRate: 1
+#              redis-rate-limiter.burstCapacity: 12
               
 # hystrix 信号量隔离，3秒后自动超时
 hystrix:
