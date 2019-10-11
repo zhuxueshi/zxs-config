@@ -6,7 +6,7 @@ spring:
     name: service-email
 eureka:
   instance:
-    hostname: 192.168.1.105
+    hostname: 172.18.184.216
     preferIpAddress: true
     instance-id: window:${spring.application.name}:${server.port}
   client:
