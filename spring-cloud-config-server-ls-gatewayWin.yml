@@ -22,9 +22,9 @@ spring:
         uri: lb://serviceCall
         order: 0
         predicates:
-          - Path=/**
+          - Path=/longse/**
         filters:
-          - StripPrefix=0
+          - StripPrefix=1
           - RequestTime=true
           # 熔断降级配置
           - name: Hystrix
