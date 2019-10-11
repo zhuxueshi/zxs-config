@@ -22,7 +22,7 @@ spring:
         uri: lb://serviceCall
         order: 0
         predicates:
-          - Path=/springcloud/**
+          - Path=/longse/**
         filters:
           - StripPrefix=1
           - RequestTime=true
